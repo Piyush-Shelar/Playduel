@@ -3,12 +3,12 @@ import {BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import LandingPage from "./pages/LandingPage";
 import LeaderBoard from "./pages/LeaderBoard";
-import UserProfile from "./Components/UserProfile";
+import UserProfile from "./components/UserProfile";
 
 
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
-import LoginPopup from "./Components/LoginPopup";
+import LoginPopup from "./components/LoginPopup";
 import AboutUs from "./Components/AboutUs";
 import ContactUs from "./Components/ContactUs";
 import Features from "./Components/Features";
@@ -18,6 +18,11 @@ import PlayDuel from "./pages/Dashboard/PlayDuel";
 import Chat from "./pages/Chat";
 import DashboardArena from "./pages/Dashboard/DashboardArena";
 import AppProvider from "./components/Allcontext";
+import Friends from "./components/Friends";
+import { SocketProvider } from "./components/SocketContext";
+import InviteModal from "./components/InviteModal";
+import Duel from "./components/Duel";
+
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -39,8 +44,15 @@ function App() {
 
   return (
     <>
-
+    
+     <SocketProvider>
+      
+      
      <AppProvider>
+      <InviteModal />
+      
+
+
       
       {/* LOGIN POPUP */}
       {showLogin && <LoginPopup setShowLogin={setShowLogin} setUser={setUser} />}
@@ -68,6 +80,9 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/features" element={<Features />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/friends" element={<Friends/>}/>
+        <Route path="/duel" element={<Duel />} />
+
 
         <Route
           path="/profile"
@@ -80,6 +95,7 @@ function App() {
           <Route path="duel" element={<PlayDuel />} />
           <Route path="profile" element={<UserProfile />} />
           <Route path="chat" element={<Chat />} />
+          
         </Route>
       </Routes>
          
@@ -88,6 +104,7 @@ function App() {
 
        
       </AppProvider>
+      </SocketProvider>
 
     </>
   );

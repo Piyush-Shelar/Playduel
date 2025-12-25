@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { IdContext } from "./Allcontext";
+import { useSocket } from "./SocketContext";
 
 const LoginPopup = ({ setShowLogin, setUser }) => {
   const [mode, setMode] = useState("signin");
@@ -9,6 +11,8 @@ const LoginPopup = ({ setShowLogin, setUser }) => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [msg, setMsg] = useState("");
+  const {id,setId}=useContext(IdContext)
+  const { socket } = useSocket();
 
   const navigate = useNavigate();
 
@@ -35,10 +39,17 @@ const LoginPopup = ({ setShowLogin, setUser }) => {
         password
       });
 
-      const { token, user } = res.data;
+      const { token, user  } = res.data;
+      setId(user.id)
+      console.log(user.id)
+      socket.emit("register-user", user.id);
+      
 
       // Store token
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", user.id);
+
+      
 
       // Set user in App state
       setUser(user);

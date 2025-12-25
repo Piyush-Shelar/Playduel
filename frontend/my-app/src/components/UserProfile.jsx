@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useContext} from "react";
 import { motion } from "framer-motion";
 import { User, Star, Zap, Award, Settings, Edit, Shield, Trophy } from "lucide-react";
+import { CatContext } from "./Allcontext";
 
 // Premium User Profile Section (Matt Black + Ink Blue)
 // SkillDuels Futuristic Gamified Design

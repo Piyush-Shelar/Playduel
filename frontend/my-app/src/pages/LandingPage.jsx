@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
-import LoginPopup from "../Components/LoginPopup";
+import LoginPopup from "../components/LoginPopup";
 
 // Reusable components
 const FeatureCard = ({ icon, title, desc, accent }) => (

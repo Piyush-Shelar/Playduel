@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { motion } from "framer-motion";
+import { CatContext } from "../../components/Allcontext";
 
 export default function DashboardArena() {
   const allQuizzes = [
@@ -14,6 +15,9 @@ export default function DashboardArena() {
   const filteredQuizzes = allQuizzes.filter((quiz) =>
     quiz.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  const {category}=useContext(CatContext)
+  console.log(category)
 
   return (
     <section className="w-full bg-[#0c0c0f] text-white  relative overflow-hidden">

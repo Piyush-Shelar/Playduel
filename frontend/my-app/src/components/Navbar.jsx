@@ -34,6 +34,7 @@ const Navbar = ({ showLogin, setShowLogin }) => {
           <Link to="/leaderboard" className="hover:text-white transition">Leaderboard</Link>
           <Link to="/pricing" className="hover:text-white transition">Pricing</Link>
           <Link to="/contact" className="hover:text-white transition">Contact Us</Link>
+           
 
           {/* LOGIN BUTTON */}
           <button

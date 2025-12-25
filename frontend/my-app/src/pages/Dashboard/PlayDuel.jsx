@@ -1,31 +1,47 @@
-import React, { useState,useEffect,useContext} from "react";
+import React, { useState,useEffect,useContext } from "react";
 import { motion } from "framer-motion";
 import { FaBolt, FaBrain, FaClock, FaTrophy } from "react-icons/fa";
 import axios from "axios"
-import { CatContext } from "../../components/Allcontext";
+import { CatContext,IdContext } from "../../components/Allcontext";
+import {useNavigate} from "react-router-dom"
 
 export default function PlayDuel() {
-  
-   const [quizdomains,setQuizdomains]=useState([])
-   const {category,setCategory}=useContext(CatContext)
+  const [quizdomains,setQuizdomains]=useState([])
 
+  const [selectedQuiz, setSelectedQuiz] = useState("");
+ // const{category,setCategory}=useContext(CatContext)
+
+  const navigate=useNavigate("")
+  const {userId}=useContext(IdContext)
 
   useEffect(()=>{
 
-     axios.get("http://localhost:9000/categories")
-     .then((res)=>{setQuizdomains(res.data);console.log(res.data)})
-     .catch((err)=>console.log(err))
+   axios.get("http://localhost:9000/categories")
+   .then((res)=>{setQuizdomains(res.data);console.log(res.data)})
+   .catch((err)=>{console.log(err)})
+  
 
   },[])
 
   const handleStartMatch = () => {
-    if (!category) {
+    if (!selectedQuiz) {
       alert("Please select a quiz domain first!");
       return;
     }
-    alert(`Starting duel in ${category.title} domain!`);
+    alert(`Starting duel in ${selectedQuiz.title} domain!`);
     // Navigate to duel arena or load duel data here
   };
+
+  function handleCategory(category)
+  {
+    const data=category
+    axios.post("http://localhost:9000/category",{
+
+      category:data
+    })
+    .then((res)=>{console.log(res)})
+    .catch((err)=>{console.log(err)})
+  }
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center text-white px-4 md:px-0 bg-gradient-to-b from-[#040506] to-[#05060a] py-12">
@@ -40,7 +56,7 @@ export default function PlayDuel() {
       </div>
 
       {/* Quiz Domain Selection */}
-      {!category && (
+      {!selectedQuiz && (
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-12 w-full max-w-6xl"
           initial={{ opacity: 0, y: 20 }}
@@ -52,15 +68,20 @@ export default function PlayDuel() {
               key={idx}
               whileHover={{ scale: 1.05 }}
               className={`relative p-6 rounded-3xl cursor-pointer border border-white/20 shadow-xl overflow-hidden group`}
-              onClick={() => setCategory(domain)}
+             onClick={(()=>{
+
+             handleCategory(domain.name)
+              navigate("/friends")
+              //navigate(`/friends/${domain.name}`)
+             })}
             >
               {/* Glow */}
-           
+              <div className={`absolute inset-0 bg-gradient-to-br ${domain.color} opacity-25 blur-2xl group-hover:opacity-40 transition`} />
               
               {/* Card Content */}
               <div className="relative z-10 flex flex-col items-center justify-center gap-4">
                 <h2 className="text-2xl font-bold text-white">{domain.name}</h2>
-              
+                <p className="text-white/70">{domain.xp}</p>
                 <motion.div
                   className="w-20 h-20 bg-white/5 rounded-full border border-white/20 shadow-inner flex items-center justify-center text-[#1f5cff] font-bold text-lg"
                   whileHover={{ rotate: 360 }}
@@ -75,7 +96,7 @@ export default function PlayDuel() {
       )}
 
       {/* Duel Arena */}
-      {category && (
+      {selectedQuiz && (
         <motion.div
           className="w-full max-w-6xl bg-[#0b0e19] rounded-3xl border border-white/10 shadow-xl mt-10 p-10"
           initial={{ opacity: 0, y: 40 }}
@@ -83,7 +104,7 @@ export default function PlayDuel() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl font-bold text-center mb-6 text-[#1f5cff]">
-            {category.title} Duel
+            {selectedQuiz.title} Duel
           </h2>
 
           {/* Player Cards */}
