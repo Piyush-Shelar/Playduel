@@ -164,4 +164,19 @@
   }
 }
 
+.leaderboard {
+  margin-top: 30px;
+  padding: 20px;
+  background: linear-gradient(180deg, #020617, #020b2a);
+  border: 1px solid #00ffcc;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+}
+
+.leaderboard-row {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
 /* ===== GLOBAL THEME ===== */

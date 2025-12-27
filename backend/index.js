@@ -24,7 +24,7 @@ const url =
   "mongodb+srv://piyushshelar10_db_user:vbXofPmn1uGJAUYB@cluster0.84hcptk.mongodb.net/?appName=Cluster0";
 
 /* -------------------- SOCKET LOGIC -------------------- */
-
+const rooms = {}; 
 // Map userId -> socketId
 const onlineUsers = {};
 
@@ -77,6 +77,50 @@ io.on("connection", (socket) => {
       console.error("accept-invite error:", err);
     }
   });
+
+  socket.on("start-quiz", ({ roomId, questions }) => {
+    rooms[roomId] = {
+      questions,
+      submissions: {}
+    };
+    console.log(roomId)
+    console.log(questions)
+  });
+
+  socket.on("submit-quiz", ({ roomId, answers }) => {
+    const room = rooms[roomId];
+    console.log(roomId)
+    console.log(answers)
+    if (!room) return;
+
+    let score = 0;
+
+    room.questions.forEach((q, index) => {
+      if (answers[index] === q.correctAnswer) {
+        score++;
+      }
+    });
+
+    room.submissions[socket.id] = score;
+
+    // 🔥 when both players submit
+    if (Object.keys(room.submissions).length === 2) {
+      const leaderboard = Object.entries(room.submissions).map(
+        ([playerId, score]) => ({
+          playerId,
+          score
+        })
+      );
+      console.log(leaderboard)
+
+      io.to(roomId).emit("quiz-end", { leaderboard });
+
+      // optional cleanup
+      delete rooms[roomId];
+    }
+  });
+
+   
 
   socket.on("join-room", (roomId) => {
     socket.join(roomId);

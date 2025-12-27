@@ -22,6 +22,7 @@ import Friends from "./components/Friends";
 import { SocketProvider } from "./components/SocketContext";
 import InviteModal from "./components/InviteModal";
 import Duel from "./components/Duel";
+import Duelresult from "./components/Duelresult";
 
 
 function App() {
@@ -82,6 +83,8 @@ function App() {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/friends" element={<Friends/>}/>
         <Route path="/duel" element={<Duel />} />
+        <Route path="/duelresult" element={<Duelresult />} />
+
 
 
         <Route

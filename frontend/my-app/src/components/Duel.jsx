@@ -126,6 +126,7 @@ function Duel() {
   };
 
   const submitQuiz = () => {
+   
     socket.emit("submit-quiz", { roomId, answers });
   };
 
@@ -154,8 +155,11 @@ function Duel() {
               {questions[currentQ].options.map((opt, idx) => (
                 <button
                   key={idx}
-                  className="option-btn"
+                
                   disabled={lockedQuestions[currentQ]}
+                  className={`option-btn ${
+                  answers[currentQ] === opt ? "option-selected" : ""
+                  }`}
                   onClick={() =>
                     setAnswers((p) => ({ ...p, [currentQ]: opt }))
                   }
